@@ -385,7 +385,7 @@ with map_col:
             margin=dict(l=0, r=0, t=0, b=0),
             height=480,
         )
-        st.plotly_chart(fig_map, use_container_width=True,
+        st.plotly_chart(fig_map, width='stretch',
                         config={"displayModeBar": False})
 
         if show_labels:
@@ -413,7 +413,7 @@ with chart_col:
         xaxis=dict(showgrid=False, showticklabels=False, zeroline=False),
         yaxis=dict(tickfont=dict(color="#9ca3af", size=10)),
     )
-    st.plotly_chart(fig_bar, use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(fig_bar, width='stretch', config={"displayModeBar": False})
 
     # Radar
     st.markdown('<div class="section-header">Profil épidémique national</div>',
@@ -440,7 +440,7 @@ with chart_col:
         paper_bgcolor="rgba(0,0,0,0)",
         margin=dict(l=40, r=40, t=10, b=10), height=200, showlegend=False,
     )
-    st.plotly_chart(fig_radar, use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(fig_radar, width='stretch', config={"displayModeBar": False})
 
 # ─── SÉRIE TEMPORELLE ─────────────────────────────────────────────────────────
 st.markdown("---")
@@ -520,7 +520,7 @@ else:
             ))
         fig1.add_vline(**vline)
         fig1.update_layout(**CHART_LAYOUT)
-        st.plotly_chart(fig1, use_container_width=True, config={"displayModeBar": False})
+        st.plotly_chart(fig1, width='stretch', config={"displayModeBar": False})
 
     with c2:
         st.markdown('<div class="section-header">Urgences COVID & PCR+</div>',
@@ -538,13 +538,13 @@ else:
             ))
         fig2.add_vline(**vline)
         fig2.update_layout(**CHART_LAYOUT)
-        st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
+        st.plotly_chart(fig2, width='stretch', config={"displayModeBar": False})
 
     with st.expander("📋 Tableau des données chargées"):
         disp = ts_agg.copy()
         disp["date"] = disp["date"].dt.strftime("%d/%m/%Y")
         disp.columns = ["Date","Hospitalisés","Réanimation","Urgences COVID","PCR+","Décès"]
-        st.dataframe(disp, use_container_width=True, hide_index=True)
+        st.dataframe(disp, width='stretch', hide_index=True)
 
 # ─── FOOTER ───────────────────────────────────────────────────────────────────
 st.markdown("""
