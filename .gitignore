@@ -218,3 +218,5 @@ tempCodeRunnerFile.py
 .streamlit/secrets.toml
 
 .DS_Store
+
+test*
