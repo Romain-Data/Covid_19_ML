@@ -58,6 +58,11 @@ def render_map(gj, indicateur, date_sel, clusters, df_day, col_key, niveau="Dép
         line_hex = CLUSTER_COLORS.get(c_id, "#cbd5e1")
         feat["properties"]["_line_color"] = hex_to_rgb(line_hex) + [255]
 
+    # Trier les features pour que les clusters les plus élevés (ex: Cluster 2) soient dessinés en dernier.
+    # Cela évite que leurs contours soient recouverts par les régions voisines.
+    if "features" in gj:
+        gj["features"].sort(key=lambda x: x["properties"].get("_cid", -1))
+
     layer = pdk.Layer(
         "GeoJsonLayer",
         gj,
