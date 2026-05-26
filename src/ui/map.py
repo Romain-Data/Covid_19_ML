@@ -73,6 +73,25 @@ def render_map(gj, indicateur, date_sel, clusters, df_day, col_key, niveau="Dép
         pickable=True,
     )
 
+    import copy
+    gj_highlight = copy.deepcopy(gj)
+    gj_highlight["features"] = [f for f in gj_highlight.get("features", []) if f["properties"].get("_cid", -1) >= 2]
+
+    layer_highlight = pdk.Layer(
+        "GeoJsonLayer",
+        gj_highlight,
+        opacity=1.0,
+        stroked=True,
+        filled=False,
+        extruded=False,
+        wireframe=True,
+        get_line_color="properties._line_color",
+        get_line_width=3000,
+        line_width_min_pixels=3,
+        pickable=False,
+        parameters={"depthTest": False},
+    )
+
     view_state = pdk.ViewState(
         latitude=46.6,
         longitude=2.5,
@@ -99,7 +118,7 @@ def render_map(gj, indicateur, date_sel, clusters, df_day, col_key, niveau="Dép
     }
 
     r = pdk.Deck(
-        layers=[layer],
+        layers=[layer, layer_highlight],
         initial_view_state=view_state,
         map_style=pdk.map_styles.LIGHT,
         tooltip=tooltip,
