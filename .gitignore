@@ -220,3 +220,5 @@ tempCodeRunnerFile.py
 .DS_Store
 
 test*
+
+preprocessed_data.pkl
