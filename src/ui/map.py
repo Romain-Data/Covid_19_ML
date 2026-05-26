@@ -1,7 +1,7 @@
 import streamlit as st
 import pydeck as pdk
 import branca.colormap as cm
-from src.config import CLUSTER_COLORS
+from src.config import CLUSTER_COLORS, CLUSTER_LABELS
 
 
 def hex_to_rgb(h):
@@ -9,7 +9,7 @@ def hex_to_rgb(h):
     return [int(h[i:i+2], 16) for i in (0, 2, 4)]
 
 
-def render_map(gj, indicateur, date_sel, clusters, df_day, col_key):
+def render_map(gj, indicateur, date_sel, clusters, df_day, col_key, niveau="Départements"):
     # Enrichissement GeoJSON
     vals = []
     for feat in gj["features"]:
@@ -38,7 +38,8 @@ def render_map(gj, indicateur, date_sel, clusters, df_day, col_key):
         })
 
     max_val  = max(vals) if vals else 1
-    colormap = cm.linear.Blues_09.scale(0, max_val)
+    colormap = cm.linear.Blues_09.scale(0, max_val)  # type: ignore
+
 
     st.markdown(
         f'<div class="sec-title">Carte — {indicateur} · {date_sel.strftime("%d/%m/%Y")}'
@@ -107,11 +108,13 @@ def render_map(gj, indicateur, date_sel, clusters, df_day, col_key):
     st.pydeck_chart(r, width='stretch')
 
     # Légende clusters sous la carte
+    labels = CLUSTER_LABELS.get(niveau, {})
+    keys = sorted(k for k in labels if k >= 0) if labels else sorted(k for k in CLUSTER_COLORS if k >= 0)
     items = "".join([
         f'<div style="display:flex;align-items:center;gap:8px;">'
         f'<div style="width:20px;height:4px;background:{CLUSTER_COLORS[k]};border-radius:2px;"></div>'
         f'<span style="font-size:11px;color:#374151;font-family:DM Sans,sans-serif;">Cluster {k}</span></div>'
-        for k in sorted(k for k in CLUSTER_COLORS if k >= 0)
+        for k in keys
     ])
     st.markdown(f"""
     <div style="margin-top: 10px; padding: 12px 16px; border-radius: 10px; background: #f8fafc; border: 1px solid #e2e8f0;">

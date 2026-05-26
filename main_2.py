@@ -74,7 +74,7 @@ render_kpis(indicateur, df_day, col_key, accent_color)
 map_col, right_col = st.columns([6, 4], gap="large")
 
 with map_col:
-    render_map(gj, indicateur, date_sel, clusters, df_day, col_key)
+    render_map(gj, indicateur, date_sel, clusters, df_day, col_key, niveau)
 
 with right_col:
     render_top_10(df_day, col_key, indicateur, accent_color)
